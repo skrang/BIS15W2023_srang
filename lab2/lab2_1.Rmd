@@ -65,15 +65,21 @@ We get an error here because `else` is a function in R. You also don't want to g
 ```{r}
 venom_GT <- 270
 ```
+```{r}
+chiron <- 261
+veyron <- 268
+```
 
 2. Use arithmetic to calculate the mean top speed for the cars.
 ```{r}
-
+(261+270+268)/3
 ```
+
+
 
 3. Use the function `mean()` to calculate the mean top speed for the cars.
 ```{r}
-
+mean(venom_GT, chiron, veyron)
 ```
 
 ## Types of Data
@@ -129,10 +135,11 @@ new_vector <- c(7, 6.2, 5, 9, NA, 4, 9.8, 7, 3, 2)
 
 2. As we did in homework 1, calculate the mean of `new_vector`.
 ```{r}
-
+mean(new_vector)
 ```
 
 3. How do you interpret this result? What does this mean about NAs?  
+it means that there is a missing data value within the set. It serves as a notification.
 
 4. Recalculate the mean using the following code chunk. Why is the useful?  
 ```{r}
