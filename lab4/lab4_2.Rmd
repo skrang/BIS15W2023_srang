@@ -128,26 +128,29 @@ colnames(mammals)
 
 3.  From the `mammals` data, filter all members of the family Bovidae with a mass greater than 450000.
 ```{r}
-
+bovidae <- filter(mammals, family=="Bovidae" & mass>450000)
+bovidae
 ```
 
 4. Let's say we are only interested in family, genus, species, mass, and gestation. Relimit the mammals data frame to these variables.  
 ```{r}
-
+mammals_relimited <- select(mammals, "family", "genus", "species", "mass", "gestation")
+mammals_relimited
 ```
 
 5. Use the output from #4 to focus on the family Bovidae with a mass greater than 450000.
 ```{r}
-
+bovidae <- filter(mammals_relimited, family=="Bovidae" & mass>=450000)
+bovidae
 ```
 
 6. From the `mammals` data, build a data frame that compares `mass`, `gestation`, and `newborn` among the primate genera `Lophocebus`, `Erythrocebus`, and `Macaca`. Among these genera, which species has the smallest `newborn` mass?
 ```{r}
-
+primate_genera <- filter(mammals, genus %in% c("Lophocebus", "Erythrocebus", "Macaca"))
 ```
 
 ```{r}
-
+select(primate_genera, "genus", "species", "mass", "gestation", "newborn")
 ```
 
 ## Wrap-up  
