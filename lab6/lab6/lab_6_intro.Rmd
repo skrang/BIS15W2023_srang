@@ -1,0 +1,86 @@
+---
+title: "Lab 6 Intro"
+date: "`r Sys.Date()`"
+output: ioslides_presentation
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = FALSE)
+library("jpeg")
+```
+
+## Setup
+1. Login to the lab computer (please don't use your personal computer).  
+2. Navigate to github.com and login.   
+2. Use GitHub desktop to clone your repository to the desktop.   
+5. Copy the class repository to the desktop (https://github.com/jmledford3115/datascibiol).  
+6. Copy the files for today's lab from the class repository and paste them into **your** repository.  
+7. Open today's lab in RStudio.  
+
+## Review from last time
+### *With a partner, discuss the following questions*
+1. What is a pipe? Why are they useful in R?
+pipeis used to connect multiple lines of code into ; more efficient 
+2. What is the shortcut for making a pipe?
+shift command m
+3. What is the difference between `select`, `filter`, and `mutate`?
+select is for columns. filter for rows, mutate is to manipulate the the data 
+4. What are the logistics of midterm 1?
+
+### Warm-up
+```{r}
+library(janitor)
+```
+
+```{r}
+library(tidyverse)
+```
+
+1. Open the data `ecs21351-sup-0003-SupplementS1.csv`
+```{r}
+species <-readr::read_csv("data/ecs21351-sup-0003-SupplementS1.csv", skip=2)
+species
+```
+
+2. Clean the names of the variables
+```{r}
+species <-janitor::clean_names(species)
+```
+```{r}
+names(species)
+```
+
+3. Explore the data using a function of your choice
+```{r}
+summary(species)
+```
+
+4. Are there more veggie, omni, insecivore, or nectar feeders in the data?
+```{r}
+species %>% 
+  tabyl(diet) %>% 
+  arrange(desc(n))
+```
+
+```{r}
+species %>% 
+  filter(diet == "Vegetation") 
+  
+```
+```{r}
+species %>% 
+  filter(diet=="Invertebrates")
+```
+```{r}
+species %>% 
+  filter(	diet == "Omnivore")
+```
+
+5. Which families are Veggie?
+```{r}
+species %>% 
+  filter(diet == "Vegetation") %>% 
+  select(family, diet) %>% 
+  tabyl(diet)
+```
+
