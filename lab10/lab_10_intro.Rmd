@@ -31,9 +31,6 @@ homerange %>%
 3. Make a plot that best summarizes this output.
 ```{r}
 homerange %>% 
-  group_by(class) %>% 
-  summarize(min_mass=min(log10.mass),
-            mean_mass=mean(log10.mass),
-            max_mass=max(log10.mass))
+  ggplot(aes(x=class, y=log10.mass))+geom_boxplot()
 ```
 
