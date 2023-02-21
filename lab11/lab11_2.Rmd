@@ -95,6 +95,15 @@ p+ theme_igray()+
        y= "n",
        fill= "Trophic Guild")
 ```
+```{r}
+p+ theme_solarized()+
+  theme(legend.position = "bottom",
+        axis.text.x = element_text(angle = 60, hjust=1))+
+  labs(title = "Observations by Taxon in Homerange Data",
+       x = NULL,
+       y= "n",
+       fill= "Trophic Guild")
+```
 
 ## RColorBrewer
 The default colors used by ggplot are often uninspiring. They don't make plots pop out in presentations or publications, and you may want to use a customized palette to make things visually consistent.  
@@ -107,6 +116,9 @@ Access the help for `RColorBrewer`.
 The thing to notice is that there are three different palettes: 1) sequential, 2) diverging, and 3) qualitative. Within each of these there are several selections. You can bring up the colors by using `display.brewer.pal()`. Specify the number of colors that you want and the palette name.
 ```{r}
 display.brewer.pal(4,"GnBu")
+```
+```{r}
+display.brewer.pal(6,"PuBuGn")
 ```
 
 The [R Color Brewer](http://colorbrewer2.org/#type=sequential&scheme=BuGn&n=3) website is very helpful for getting an idea of the color palettes. To make things easy, use these two guidelines:
@@ -133,7 +145,7 @@ colors <- paletteer::palettes_d_names
 
 Now we can display the palettes. Assign the palette to `my_palette` and then build this base R bar plot. There are a lot of options; `paleteer` is a collection of popular palettes. I really like the [`ggsci` package] (https://cran.r-project.org/web/packages/ggsci/vignettes/ggsci.html)
 ```{r}
-my_palette <- paletteer_d("ggprism::flames")
+my_palette <- paletteer_d("calecopal::bigsur2")
 ```
 
 ```{r}
@@ -160,16 +172,28 @@ homerange %>%
   xlim(0, 4) +
   ylim(1, 6)
 ```
+```{r}
+homerange %>% 
+  ggplot(aes(x = log10.mass, y = log10.hra, color = locomotion)) +
+  geom_point() +
+  xlim(1, 4) +
+  ylim(0, 5)
+```
 
 ## Practice
 1. Revisit the relationship between mass and homerange using a scatterplot, but color the points by taxonomic class using a custom color theme.
 ```{r}
-
+homerange %>% 
+  ggplot(aes(x = log10.mass, y = log10.hra, color = class)) +
+  geom_point()
 ```
+
 
 2. Build bar plots that show the representation by taxonomic class with carnivores and herbivores. Try using a color theme that matches your scatterplot to keep everything consistent.
 ```{r}
-
+homerange %>% 
+  ggplot(aes(x=trophic.guild, fill=class))+
+  geom_bar()
 ```
 
 ## Faceting
@@ -267,12 +291,18 @@ ecosphere %>%
 ## Practice
 1. Build a faceted plot that shows a distribution of life expectancy by habitat type.
 ```{r}
-
+ecosphere %>% 
+  ggplot(aes(x=log10_mass))+
+  geom_density()+
+  facet_grid(~habitat)
 ```
 
 2. Try the same plot as #1 above, but include life_expectancy~habitat.
 ```{r}
-
+ecosphere %>% 
+  ggplot(aes(x=log10_mass))+
+  geom_density()+
+  facet_grid(life_expectancy~habitat, scales = "free_y")
 ```
 
 ## That's it, let's take a break!   
