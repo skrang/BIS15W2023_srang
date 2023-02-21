@@ -294,7 +294,7 @@ ecosphere %>%
 ecosphere %>% 
   ggplot(aes(x=log10_mass))+
   geom_density()+
-  facet_grid(~habitat)
+  facet_wrap(~habitat)
 ```
 
 2. Try the same plot as #1 above, but include life_expectancy~habitat.
