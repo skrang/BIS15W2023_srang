@@ -93,11 +93,11 @@ surgery %>%
 surgery %>% 
   filter(!is.na(asa_status)) %>%
   ggplot(aes(x=bmi, fill=asa_status)) +
-  geom_bar()+
+  geom_density()+
   facet_wrap(.~asa_status)+
   labs(title = "Distribution of BMI in each ASA Status",
-       x = NULL,
-       y = "Body Mass Index")
+       x = "Body Mass Index",
+       y = "Density")
 ```
 
 The variable `ccsmort30rate` is a measure of the overall 30-day mortality rate associated with each type of operation. The variable `ccscomplicationrate` is a measure of the 30-day in-hospital complication rate. The variable `ahrq_ccs` lists each type of operation.  
@@ -105,16 +105,18 @@ The variable `ccsmort30rate` is a measure of the overall 30-day mortality rate a
 7. (4 points) What are the 5 procedures associated with highest risk of 30-day mortality AND how do they compare with the 5 procedures with highest risk of complication? (hint: no need for a plot here)
 ```{r}
 surgery %>% 
-  select(ahrq_ccs, mortality_rsi) %>% 
-  top_n(5, mortality_rsi) %>% 
-  arrange(desc(mortality_rsi))
+  group_by(ahrq_ccs) %>% 
+  summarize(mortality_mean=mean(mortality_rsi)) %>% 
+  top_n(5, mortality_mean) %>% 
+  arrange(desc(mortality_mean))
 ```
 
 ```{r}
 surgery %>% 
-  select(ahrq_ccs, complication_rsi) %>% 
-  top_n(5, complication_rsi) %>% 
-  arrange(desc(complication_rsi))
+  group_by(ahrq_ccs) %>% 
+  summarize(complication_mean=mean(complication_rsi)) %>% 
+  top_n(5, complication_mean) %>% 
+  arrange(desc(complication_mean))
 ```
 
 
@@ -124,25 +126,51 @@ surgery %>%
   ggplot(aes(x=ahrq_ccs, y=ccsmort30rate))+
   geom_col()+ 
   theme(axis.title = element_text(size = 10),
-        axis.text.x = element_text(angle=75, hjust = 1, size=4))
+        axis.text.x = element_text(angle=75, hjust = 1, size=4))+
+  labs(title = "30 Day Mortality Rate in Each Procedure",
+       x = NULL,
+       y = "Rate")
         
 ```
 
 
 9. (4 points) When is the best month to have surgery? Make a chart that shows the 30-day mortality and complications for the patients by month. `mort30` is the variable that shows whether or not a patient survived 30 days post-operation.
+
 ```{r}
 surgery %>% 
-  group_by(month) %>% 
-  
+  tabyl(mort30, month)
+```
+
+```{r}
+surgery %>% 
+  tabyl(complication, month)
 ```
 
 10. (4 points) Make a plot that visualizes the chart from question #9. Make sure that the months are on the x-axis. Do a search online and figure out how to order the months Jan-Dec.
+surgery %>% 
 ```{r}
 surgery %>% 
   group_by(month) %>% 
-  ggplot(aes(x=mortality_rsi,))
+  ggplot(aes(x=mort30, fill=month))+
+  geom_bar()+
+  labs(title = "30 Day Mortality in Each Month",
+       x = NULL,
+       y = "Mortality")
+```
+ 
+```{r}
+surgery %>% 
+  group_by(month) %>% 
+  ggplot(aes(x=complication, fill=month))+
+  geom_bar()+
+  labs(title = "Complications in Month",
+       x = NULL,
+       y = "Complications")
 ```
 
 Please provide the names of the students you have worked with with during the exam:
+```{r}
+#Group5
+```
 
 Please be 100% sure your exam is saved, knitted, and pushed to your github repository. No need to submit a link on canvas, we will find your exam in your repository.
