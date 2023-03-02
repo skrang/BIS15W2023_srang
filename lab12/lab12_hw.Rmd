@@ -1,6 +1,6 @@
 ---
 title: "Lab 13 Homework"
-author: "Please Add Your Name Here"
+author: "Sidney Rang"
 date: "`r Sys.Date()`"
 output:
   html_document:
@@ -43,6 +43,39 @@ wolves %>%
   ggplot(aes(x=sex, fill=sex))+
   geom_bar()+
   facet_wrap(~pop)
+```
+
+
+```{r}
+ui <- dashboardPage(
+  dashboardHeader(title = "Sexual Composition by Wolf Pack"),
+  dashboardSidebar(disable = T),
+  dashboardBody(
+  fluidRow(
+  box(
+  selectInput("y", "Select Population", choices = c("AK.PEN", "BAN.JAS", "BC", "DENALI", "ELLES", "GTNP", "INT.AK", "MEXICAN", "MI", "MT", "N.NWT", "ONT", "SE.AK", "SNF", "SS.NWT", "YNP", "YUCH"), 
+              selected = "AK.PEN")
+  ), 
+  
+  box(
+  plotOutput("plot", width = "500px", height = "500px")
+  ) 
+  ) 
+  ) 
+) 
+
+server <- function(input, output, session) { 
+  output$plot <- renderPlot({
+    wolves %>% 
+    filter(sex!="NA") %>%
+  ggplot(aes_string(x ="sex", fill="sex")) +
+      geom_bar(size=input$pointsize, alpha=0.8) + 
+      theme_light(base_size = 18)
+  })
+  session$onSessionEnded(stopApp)
+  }
+
+shinyApp(ui, server)
 ```
 
 ## Data
